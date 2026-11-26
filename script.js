@@ -9,22 +9,27 @@ const isiUndangan = document.getElementById("isi-undangan");
 const tombolBuka = document.getElementById("tombol-buka");
 const tombolMusik = document.getElementById("tombol-musik");
 const statusMusik = document.getElementById("status-musik");
-const nadaMusik = [392, 440, 523.25, 659.25, 523.25, 440, 392, 349.23];
+const ikonMusik = document.getElementById("ikon-musik");
+const audioLatar = document.getElementById("audio-latar");
+const notifikasiSalin = document.getElementById("notifikasi-salin");
 const tanggalAcara = new Date("2027-02-05T18:00:00+07:00");
 const statusAcara = document.getElementById("status-acara");
+const tombolKalender = document.getElementById("tombol-kalender");
 const elemenHitungMundur = {
     hari: document.getElementById("hitung-hari"),
     jam: document.getElementById("hitung-jam"),
     menit: document.getElementById("hitung-menit"),
     detik: document.getElementById("hitung-detik")
 };
-
-let konteksAudio;
-let jedaNada;
-let nomorNada = 0;
+let waktuNotifikasi;
 let musikBerputar = false;
-let musikMemulai = false;
 let undanganDibuka = false;
+
+const tautanGoogleMaps = "https://maps.app.goo.gl/qYvoKWfRgXmiJxd47";
+document.getElementById("tautan-arah").href = tautanGoogleMaps;
+document.getElementById("qr-lokasi").src =
+    `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(tautanGoogleMaps)}`;
+document.getElementById("qr-lokasi").alt = "QR Code menuju lokasi acara";
 
 function perbaruiHitungMundur() {
     const selisih = tanggalAcara.getTime() - Date.now();
@@ -42,6 +47,16 @@ function perbaruiHitungMundur() {
     if (selisih <= 0 && !statusAcara.textContent) {
         statusAcara.textContent = "Acara telah dimulai.";
     }
+}
+
+function tampilkanNotifikasi(pesan, gagal = false) {
+    notifikasiSalin.textContent = pesan;
+    notifikasiSalin.classList.toggle("gagal", gagal);
+    notifikasiSalin.classList.add("tampil");
+    window.clearTimeout(waktuNotifikasi);
+    waktuNotifikasi = window.setTimeout(() => {
+        notifikasiSalin.classList.remove("tampil");
+    }, 3000);
 }
 
 function formatTanggalKalender(tanggal) {
@@ -70,7 +85,7 @@ function unduhKalender() {
         `DTEND:${formatTanggalKalender(tanggalSelesai)}`,
         `SUMMARY:${amankanTeksKalender("Ulang Tahun Farid Athaillah")}`,
         `DESCRIPTION:${amankanTeksKalender("Perayaan ulang tahun Farid Athaillah.")}`,
-        `LOCATION:${amankanTeksKalender("The Garden House, Jl. Melati No. 17, Jakarta")}`,
+        `LOCATION:${amankanTeksKalender("SMKN 6 Kota Tangerang Selatan, Paku Jaya")}`,
         "END:VEVENT",
         "END:VCALENDAR"
     ].join("\r\n") + "\r\n";
@@ -88,79 +103,27 @@ function unduhKalender() {
     window.setTimeout(() => URL.revokeObjectURL(alamatBerkas), 1000);
 }
 
-function perbaruiTombolMusik() {
-    const label = musikBerputar ? "Jeda musik" : "Putar musik";
+function perbaruiTombolMusik(berputar) {
+    musikBerputar = berputar;
+    const label = musikBerputar ? "Matikan musik" : "Nyalakan musik";
     tombolMusik.setAttribute("aria-label", label);
     tombolMusik.setAttribute("title", label);
     tombolMusik.setAttribute("aria-pressed", String(musikBerputar));
-    statusMusik.textContent = musikBerputar ? "Musik diputar" : "Musik dijeda";
-}
-
-function mainkanNada() {
-    if (!konteksAudio || konteksAudio.state !== "running") return;
-
-    const osilator = konteksAudio.createOscillator();
-    const volume = konteksAudio.createGain();
-    const waktuMulai = konteksAudio.currentTime;
-
-    osilator.type = "sine";
-    osilator.frequency.value = nadaMusik[nomorNada % nadaMusik.length];
-    volume.gain.setValueAtTime(0.0001, waktuMulai);
-    volume.gain.exponentialRampToValueAtTime(0.045, waktuMulai + 0.06);
-    volume.gain.exponentialRampToValueAtTime(0.0001, waktuMulai + 0.62);
-    osilator.connect(volume);
-    volume.connect(konteksAudio.destination);
-    osilator.start(waktuMulai);
-    osilator.stop(waktuMulai + 0.65);
-    nomorNada += 1;
+    statusMusik.textContent = musikBerputar ? "Musik Nyala" : "Musik Mati";
+    ikonMusik.textContent = musikBerputar ? "♫" : "Ⅱ";
+    ikonMusik.classList.toggle("bergerak", musikBerputar);
+    tombolMusik.classList.toggle("musik-nyala", musikBerputar);
+    tombolMusik.classList.toggle("musik-mati", !musikBerputar);
 }
 
 async function putarMusik() {
-    if (musikBerputar || musikMemulai) return;
-
-    const KelasAudio = window.AudioContext || window.webkitAudioContext;
-    if (!KelasAudio) {
-        statusMusik.textContent = "Musik tidak didukung browser ini";
-        tombolMusik.setAttribute("aria-label", "Musik tidak tersedia");
-        console.error("Web Audio API tidak tersedia di browser ini.");
-        return;
-    }
-
-    musikMemulai = true;
-    tombolMusik.disabled = true;
     try {
-        konteksAudio = konteksAudio || new KelasAudio();
-        await konteksAudio.resume();
-        if (konteksAudio.state !== "running") {
-            throw new Error("Audio tidak berhasil dijalankan.");
-        }
-
-        musikBerputar = true;
-        mainkanNada();
-        window.clearInterval(jedaNada);
-        jedaNada = window.setInterval(mainkanNada, 700);
-        perbaruiTombolMusik();
+        await audioLatar.play();
+        perbaruiTombolMusik(true);
     } catch (kesalahan) {
-        musikBerputar = false;
-        perbaruiTombolMusik();
-        statusMusik.textContent = "Musik tidak dapat diputar";
+        perbaruiTombolMusik(false);
+        tampilkanNotifikasi("Musik tidak dapat diputar.", true);
         console.error("Gagal memutar musik latar:", kesalahan);
-    } finally {
-        musikMemulai = false;
-        tombolMusik.disabled = false;
-    }
-}
-
-async function jedaMusik() {
-    window.clearInterval(jedaNada);
-    musikBerputar = false;
-    perbaruiTombolMusik();
-
-    if (!konteksAudio || konteksAudio.state !== "running") return;
-    try {
-        await konteksAudio.suspend();
-    } catch (kesalahan) {
-        console.error("Gagal menjeda musik:", kesalahan);
     }
 }
 
@@ -178,14 +141,45 @@ tombolBuka.addEventListener("click", () => {
 });
 
 tombolMusik.addEventListener("click", () => {
-    if (musikBerputar) {
-        jedaMusik();
-    } else {
+    if (audioLatar.paused) {
         putarMusik();
+    } else {
+        audioLatar.pause();
     }
 });
 
-document.getElementById("tombol-kalender").addEventListener("click", unduhKalender);
+audioLatar.addEventListener("play", () => perbaruiTombolMusik(true));
+audioLatar.addEventListener("pause", () => perbaruiTombolMusik(false));
+tombolKalender.addEventListener("click", unduhKalender);
+
+document.querySelectorAll(".tombol-salin").forEach(tombol => {
+    tombol.addEventListener("click", async () => {
+        try {
+            await navigator.clipboard.writeText(tombol.dataset.salin);
+            tampilkanNotifikasi("Berhasil disalin!");
+        } catch (kesalahan) {
+            tampilkanNotifikasi("Gagal menyalin. Coba salin manual.", true);
+            console.error("Gagal menyalin teks ke clipboard:", kesalahan);
+        }
+    });
+});
+
+document.body.classList.add("js-aktif");
+const elemenAnimasi = document.querySelectorAll(".animasi-muncul");
+if ("IntersectionObserver" in window) {
+    const pengamat = new IntersectionObserver((entri, observer) => {
+        entri.forEach(item => {
+            if (item.isIntersecting) {
+                item.target.classList.add("terlihat");
+                observer.unobserve(item.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    elemenAnimasi.forEach(elemen => pengamat.observe(elemen));
+} else {
+    elemenAnimasi.forEach(elemen => elemen.classList.add("terlihat"));
+}
 
 perbaruiHitungMundur();
 window.setInterval(perbaruiHitungMundur, 1000);

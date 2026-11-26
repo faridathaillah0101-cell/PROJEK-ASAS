@@ -336,33 +336,324 @@ button {
     font-style: italic;
 }
 
+.kartu-bagian {
+    margin-top: 2rem;
+    border: 2px solid #facc15;
+    border-radius: 22px;
+    padding: clamp(1.1rem, 4vw, 2rem);
+    background: #ffffff;
+    box-shadow: 0 0.75rem 2rem rgba(2, 132, 199, 0.1);
+}
+
+.bagian-lokasi {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.bagian-lokasi .label-kecil,
+.bagian-kado .label-kecil,
+.bagian-galeri .label-kecil {
+    margin-bottom: 0.5rem;
+}
+
+.judul-bagian {
+    margin: 0 0 0.8rem;
+    color: #0f172a;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.45rem, 5vw, 2rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.teks-lokasi,
+.kontak-lokasi,
+.pengantar-kado {
+    color: #334155;
+    line-height: 1.7;
+}
+
+.teks-lokasi {
+    margin: 0 0 0.75rem;
+}
+
+.kontak-lokasi {
+    margin: 0 0 1rem;
+}
+
+.kontak-lokasi a,
+.tautan-lokasi-ringkas {
+    color: #0284c7;
+    font-weight: 700;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.tautan-lokasi-ringkas {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.tautan-arah {
+    display: inline-flex;
+    min-height: 2.8rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding: 0.65rem 1.1rem;
+    color: #ffffff;
+    background: #f97316;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.tautan-arah:hover {
+    transform: translateY(-2px);
+    background: #ea580c;
+}
+
+.kotak-qr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(82px, 120px);
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.3rem;
+    border: 1px solid #bae6fd;
+    border-radius: 16px;
+    padding: 0.8rem;
+    background: #f0f9ff;
+}
+
+.kotak-qr h4,
+.kartu-kado h4 {
+    margin: 0 0 0.3rem;
+    color: #0f172a;
+    font-size: 1rem;
+}
+
+.kotak-qr p {
+    margin: 0;
+    color: #475569;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.gambar-qr {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border: 4px solid #ffffff;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+.wadah-peta {
+    min-width: 0;
+    min-height: 300px;
+    overflow: hidden;
+    border: 1px solid #bae6fd;
+    border-radius: 16px;
+    background: #e0f2fe;
+}
+
+.wadah-peta iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    border: 0;
+}
+
+.bagian-kado,
+.bagian-galeri {
+    text-align: center;
+}
+
+.pengantar-kado {
+    max-width: 38rem;
+    margin: 0 auto 1.3rem;
+}
+
+.daftar-kado {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.85rem;
+    text-align: left;
+}
+
+.kartu-kado {
+    min-width: 0;
+    border: 1px solid #fde68a;
+    border-radius: 16px;
+    padding: 1rem;
+    background: #fffcdf;
+}
+
+.pemilik-rekening,
+.nomor-rekening,
+.alamat-kado {
+    margin: 0.35rem 0;
+    color: #334155;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.pemilik-rekening {
+    font-size: 0.85rem;
+}
+
+.nomor-rekening,
+.alamat-kado {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.tombol-salin {
+    min-height: 2.4rem;
+    margin-top: 0.4rem;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    color: #ffffff;
+    background: #0284c7;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.tombol-salin:hover {
+    background: #0369a1;
+}
+
+.tombol-salin:focus-visible,
+.tautan-arah:focus-visible {
+    outline: 3px solid #facc15;
+    outline-offset: 3px;
+}
+
+.kisi-galeri {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin-top: 1.2rem;
+}
+
+.foto-galeri {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border: 1px solid #bae6fd;
+    border-radius: 14px;
+    object-fit: cover;
+    background: #e0f2fe;
+}
+
+.js-aktif .animasi-muncul {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.js-aktif .animasi-muncul.terlihat {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notifikasi-salin {
+    position: fixed;
+    z-index: 20;
+    bottom: max(5.5rem, calc(env(safe-area-inset-bottom) + 4.5rem));
+    left: 50%;
+    width: min(24rem, calc(100vw - 2rem));
+    border-radius: 999px;
+    padding: 0.85rem 1.2rem;
+    color: #ffffff;
+    background: linear-gradient(100deg, #0284c7, #f97316);
+    box-shadow: 0 0.75rem 2rem rgba(15, 23, 42, 0.2);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 0.5rem);
+    transition: opacity 180ms ease, transform 180ms ease;
+    visibility: hidden;
+}
+
+.notifikasi-salin.tampil {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    visibility: visible;
+}
+
+.notifikasi-salin.gagal {
+    background: #b91c1c;
+}
+
 .tombol-musik {
     position: fixed;
     z-index: 8;
     right: max(1.2rem, env(safe-area-inset-right));
     bottom: max(1.2rem, env(safe-area-inset-bottom));
     display: flex;
-    width: 3rem;
-    height: 3rem;
+    min-height: 3rem;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
+    gap: 0.55rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 999px;
     color: #ffffff;
     background: #0284c7;
     box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    padding: 0.65rem 1rem;
     transition: transform 180ms ease, background-color 180ms ease;
+    white-space: nowrap;
+}
+
+.tombol-musik.musik-nyala {
+    color: #ffffff;
+    background: #0284c7;
+}
+
+.tombol-musik.musik-mati {
+    color: #334155;
+    background: #e2e8f0;
 }
 
 .tombol-musik:hover {
     transform: scale(1.06);
-    background: #0369a1;
 }
 
 .ikon-musik {
-    width: 1.25rem;
-    height: 1.25rem;
+    display: inline-block;
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.ikon-musik.bergerak {
+    animation: irama-musik 700ms ease-in-out infinite alternate;
+}
+
+.teks-status-musik {
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+@keyframes irama-musik {
+    from {
+        transform: rotate(-12deg) scale(0.95);
+    }
+
+    to {
+        transform: rotate(12deg) scale(1.08);
+    }
 }
 
 .tersembunyi,
@@ -405,6 +696,39 @@ button {
 
     .kartu-info {
         padding: 2rem;
+    }
+
+    .daftar-kado {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kartu-alamat {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (min-width: 760px) {
+    .bagian-lokasi {
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        align-items: stretch;
+    }
+
+    .wadah-peta,
+    .wadah-peta iframe {
+        min-height: 100%;
+    }
+
+    .kisi-galeri {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.9rem;
+    }
+
+    .daftar-kado {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .kartu-alamat {
+        grid-column: auto;
     }
 }
 

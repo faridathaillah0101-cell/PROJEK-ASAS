@@ -63,22 +63,90 @@
                     <article class="kartu-info">
                         <span class="ikon-info" aria-hidden="true">⌖</span>
                         <h3>Lokasi</h3>
-                        <p>Paku Jaya<br>Jl. Bhayangkara No. 15, Tangerang selatan, Banten</p>
+                        <p>Paku Jaya / SMKN 6 Kota Tangerang Selatan</p>
+                        <a class="tautan-lokasi-ringkas" href="#bagian-lokasi">Lihat peta &amp; alamat</a>
                     </article>
                 </div>
                 <button class="tombol-kalender" id="tombol-kalender" type="button">Simpan ke Kalender</button>
+
+                <section class="kartu-bagian bagian-lokasi animasi-muncul" id="bagian-lokasi" aria-labelledby="judul-lokasi">
+                    <div class="rincian-lokasi">
+                        <p class="label-kecil">LOKASI ACARA</p>
+                        <h3 class="judul-bagian" id="judul-lokasi">[Tulis Nama Tempat]</h3>
+                        <p class="teks-lokasi">[Tulis Alamat Lengkap di Sini]</p>
+                        <p class="kontak-lokasi">Hubungi: <strong>Farid Athaillah</strong> —
+                            <a href="tel:+6281574463908">0815-7446-3908</a>
+                        </p>
+                        <a class="tautan-arah" id="tautan-arah" href="#" target="_blank" rel="noopener noreferrer">
+                            Buka petunjuk arah <span aria-hidden="true">→</span>
+                        </a>
+                        <div class="kotak-qr">
+                            <div>
+                                <h4>Scan Lokasi</h4>
+                                <p>Arahkan kamera untuk membuka peta.</p>
+                            </div>
+                            <img class="gambar-qr" id="qr-lokasi" alt="QR Code lokasi acara" width="120" height="120" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="wadah-peta">
+                        <!-- Ganti nilai src dengan URL iframe dari Google Maps: Bagikan > Sematkan peta. -->
+                        <iframe id="peta-acara" title="Peta lokasi acara" src="https://maps.google.com/maps?q=Paku+Jaya%2C+Kota+Tangerang+Selatan&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                    </div>
+                </section>
+
+                <section class="kartu-bagian bagian-kado animasi-muncul" aria-labelledby="judul-kado">
+                    <p class="label-kecil">KADO DIGITAL</p>
+                    <h3 class="judul-bagian" id="judul-kado">Kirim doa dan tanda kasih</h3>
+                    <p class="pengantar-kado">Kehadiranmu adalah hadiah terbaik. Jika berkenan, kamu juga dapat berbagi melalui:</p>
+                    <div class="daftar-kado">
+                        <article class="kartu-kado">
+                            <h4>DANA</h4>
+                            <p class="pemilik-rekening">Atas nama Farid Athaillah</p>
+                            <p class="nomor-rekening">08xxxxxxxxxx</p>
+                            <button class="tombol-salin" type="button" aria-label="Salin nomor DANA" data-salin="08xxxxxxxxxx">Salin</button>
+                        </article>
+                        <article class="kartu-kado">
+                            <h4>BCA</h4>
+                            <p class="pemilik-rekening">Atas nama Farid Athaillah</p>
+                            <p class="nomor-rekening">xxxxxxxxxxxx</p>
+                            <button class="tombol-salin" type="button" aria-label="Salin nomor rekening BCA" data-salin="xxxxxxxxxxxx">Salin</button>
+                        </article>
+                        <article class="kartu-kado kartu-alamat">
+                            <h4>Alamat Pengiriman Kado</h4>
+                            <p class="alamat-kado">Isi alamat penerima kado di sini</p>
+                            <button class="tombol-salin" type="button" aria-label="Salin alamat pengiriman kado" data-salin="Isi alamat penerima kado di sini">Salin</button>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="kartu-bagian bagian-galeri animasi-muncul" aria-labelledby="judul-galeri">
+                    <p class="label-kecil">MOMEN BAHAGIA</p>
+                    <h3 class="judul-bagian" id="judul-galeri">Galeri Foto</h3>
+                    <!-- Ganti URL placeholder dengan path foto lokal, misalnya assets/foto-1.jpg. -->
+                    <div class="kisi-galeri">
+                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/e0f2fe/0f172a?text=Foto+1" alt="Placeholder foto kenangan 1" loading="lazy" decoding="async">
+                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/fef9c3/0f172a?text=Foto+2" alt="Placeholder foto kenangan 2" loading="lazy" decoding="async">
+                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/bae6fd/0f172a?text=Foto+3" alt="Placeholder foto kenangan 3" loading="lazy" decoding="async">
+                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/fde68a/0f172a?text=Foto+4" alt="Placeholder foto kenangan 4" loading="lazy" decoding="async">
+                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/dbeafe/0f172a?text=Foto+5" alt="Placeholder foto kenangan 5" loading="lazy" decoding="async">
+                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/ffedd5/0f172a?text=Foto+6" alt="Placeholder foto kenangan 6" loading="lazy" decoding="async">
+                    </div>
+                </section>
+
                 <p class="penutup">Sampai jumpa di hari bahagia!</p>
             </div>
         </section>
     </main>
 
-    <button class="tombol-musik tersembunyi" id="tombol-musik" type="button" aria-label="Putar musik" aria-pressed="false" title="Putar musik">
-        <svg class="ikon-musik" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M9 18V5l12-2v13"></path>
-            <circle cx="6" cy="18" r="3"></circle>
-            <circle cx="18" cy="16" r="3"></circle>
-        </svg>
-        <span class="teks-tersembunyi" id="status-musik">Musik dijeda</span>
+    <!-- BOA.mp3 adalah audio yang sudah tersedia. Ganti source ini jika ingin memakai lagu lain. -->
+    <audio id="audio-latar" loop preload="none">
+        <source src="BOA.mp3" type="audio/mpeg">
+        Browser ini tidak mendukung pemutaran audio.
+    </audio>
+    <button class="tombol-musik musik-mati tersembunyi" id="tombol-musik" type="button" aria-label="Nyalakan musik" aria-pressed="false" title="Nyalakan musik">
+        <span class="ikon-musik" id="ikon-musik" aria-hidden="true">Ⅱ</span>
+        <span class="teks-status-musik" id="status-musik">Musik Mati</span>
     </button>
+    <div class="notifikasi-salin" id="notifikasi-salin" role="status" aria-live="polite"></div>
 </body>
 </html>
