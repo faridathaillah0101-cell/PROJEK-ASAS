@@ -336,3 +336,66 @@ if ("IntersectionObserver" in window) {
 
 perbaruiHitungMundur();
 window.setInterval(perbaruiHitungMundur, 1000);
+
+
+// Fungsi membuat efek kertas warna-warni berjatuhan (Confetti)
+function luncurkanConfetti(jumlah = 35) {
+  const warnaConfetti = ['#FFD166', '#FF9F1C', '#06D6A0', '#118AB2', '#EF476F', '#8338EC'];
+  let wadah = document.querySelector('.confetti-container');
+
+  if (!wadah) {
+    wadah = document.createElement('div');
+    wadah.className = 'confetti-container';
+    document.body.appendChild(wadah);
+  }
+
+  for (let i = 0; i < jumlah; i++) {
+    const kertas = document.createElement('div');
+    kertas.className = 'confetti-piece';
+
+    // Acak warna, posisi horizontal, ukuran, dan kecepatan jatuh
+    kertas.style.backgroundColor = warnaConfetti[Math.floor(Math.random() * warnaConfetti.length)];
+    kertas.style.left = Math.random() * 100 + 'vw';
+    kertas.style.width = (Math.random() * 6 + 6) + 'px';
+    kertas.style.height = (Math.random() * 8 + 8) + 'px';
+    kertas.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    kertas.style.animationDelay = (Math.random() * 0.4) + 's';
+
+    wadah.appendChild(kertas);
+
+    // Hapus elemen dari HTML setelah selesai jatuh agar memori browser tetap ringan
+    setTimeout(() => {
+      kertas.remove();
+    }, 4500);
+  }
+}
+
+// 1. Jalankan efek saat website pertama kali dibuka & saat tombol Buka Undangan diklik
+window.addEventListener('load', () => {
+  luncurkanConfetti(45);
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('button') && e.target.textContent.toLowerCase().includes('buka undangan')) {
+    luncurkanConfetti(50);
+  }
+});
+
+// 2. Jalankan efek saat halaman di-scroll ke atas (dengan jeda 2.5 detik agar mulus)
+let posisiScrollTerakhir = window.scrollY;
+let sedangJedaConfetti = false;
+
+window.addEventListener('scroll', () => {
+  const posisiSekarang = window.scrollY;
+
+  if (posisiSekarang < posisiScrollTerakhir - 30 && !sedangJedaConfetti) {
+    luncurkanConfetti(25);
+    sedangJedaConfetti = true;
+
+    setTimeout(() => {
+      sedangJedaConfetti = false;
+    }, 2500);
+  }
+
+  posisiScrollTerakhir = posisiSekarang <= 0 ? 0 : posisiSekarang;
+});

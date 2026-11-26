@@ -944,3 +944,39 @@ button {
         transition-duration: 0.01ms !important;
     }
 }
+
+
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* Bentuk potongan kertas warna-warni */
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  border-radius: 3px;
+  opacity: 0.9;
+  animation: jatuhConfetti linear forwards;
+}
+
+/* Animasi jatuh sambil berputar */
+@keyframes jatuhConfetti {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(105vh) rotate(720deg) scale(0.8);
+    opacity: 0;
+  }
+}
