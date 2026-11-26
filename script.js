@@ -1,8 +1,9 @@
 const namaTamu = document.getElementById("nama-tamu");
 const parameterNama = new URLSearchParams(window.location.search).get("to");
-namaTamu.textContent = parameterNama && parameterNama.trim()
-    ? parameterNama.trim()
-    : "Tamu Undangan";
+const namaAwal = parameterNama && parameterNama.trim() ? parameterNama.trim() : "";
+namaTamu.textContent = namaAwal || "Tamu Undangan";
+const inputNamaRsvp = document.getElementById("nama-rsvp");
+inputNamaRsvp.value = namaAwal;
 
 const sampulDepan = document.getElementById("sampul-depan");
 const isiUndangan = document.getElementById("isi-undangan");
@@ -15,6 +16,10 @@ const notifikasiSalin = document.getElementById("notifikasi-salin");
 const tanggalAcara = new Date("2027-02-05T18:00:00+07:00");
 const statusAcara = document.getElementById("status-acara");
 const tombolKalender = document.getElementById("tombol-kalender");
+const formRsvp = document.getElementById("form-rsvp");
+const daftarUcapan = document.getElementById("daftar-ucapan");
+const pesanKosong = document.getElementById("kosong-buku-tamu");
+const statusRsvp = document.getElementById("status-rsvp");
 const elemenHitungMundur = {
     hari: document.getElementById("hitung-hari"),
     jam: document.getElementById("hitung-jam"),
@@ -24,6 +29,7 @@ const elemenHitungMundur = {
 let waktuNotifikasi;
 let musikBerputar = false;
 let undanganDibuka = false;
+const kunciBukuTamu = "undangan-farid-athaillah-buku-tamu";
 
 const tautanGoogleMaps = "https://maps.app.goo.gl/qYvoKWfRgXmiJxd47";
 document.getElementById("tautan-arah").href = tautanGoogleMaps;
@@ -57,6 +63,75 @@ function tampilkanNotifikasi(pesan, gagal = false) {
     waktuNotifikasi = window.setTimeout(() => {
         notifikasiSalin.classList.remove("tampil");
     }, 3000);
+}
+
+function ucapanValid(ucapan) {
+    return ucapan !== null
+        && typeof ucapan === "object"
+        && typeof ucapan.nama === "string"
+        && ucapan.nama.trim().length > 0
+        && (ucapan.kehadiran === "Hadir" || ucapan.kehadiran === "Tidak Hadir")
+        && typeof ucapan.ucapan === "string"
+        && ucapan.ucapan.trim().length > 0
+        && typeof ucapan.tanggal === "string"
+        && !Number.isNaN(Date.parse(ucapan.tanggal));
+}
+
+function buatKartuUcapan(ucapan) {
+    const kartu = document.createElement("article");
+    kartu.className = "kartu-ucapan";
+
+    const kepala = document.createElement("div");
+    kepala.className = "kepala-ucapan";
+
+    const nama = document.createElement("strong");
+    nama.className = "nama-pengucap";
+    nama.textContent = ucapan.nama;
+
+    const status = document.createElement("span");
+    status.className = "lencana-kehadiran";
+    status.classList.add(ucapan.kehadiran === "Tidak Hadir" ? "tidak-hadir" : "hadir");
+    status.textContent = ucapan.kehadiran;
+    kepala.append(nama, status);
+
+    const isi = document.createElement("p");
+    isi.className = "isi-ucapan";
+    isi.textContent = ucapan.ucapan;
+
+    const waktu = document.createElement("time");
+    waktu.className = "tanggal-ucapan";
+    waktu.dateTime = ucapan.tanggal;
+    waktu.textContent = new Date(ucapan.tanggal).toLocaleString("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "short"
+    });
+
+    kartu.append(kepala, isi, waktu);
+    return kartu;
+}
+
+function tampilkanUcapan(ucapan, diAwal = false) {
+    if (pesanKosong.parentNode) pesanKosong.remove();
+    const kartu = buatKartuUcapan(ucapan);
+    if (diAwal) {
+        daftarUcapan.prepend(kartu);
+    } else {
+        daftarUcapan.append(kartu);
+    }
+}
+
+function muatBukuTamu() {
+    try {
+        const tersimpan = localStorage.getItem(kunciBukuTamu);
+        const ucapan = tersimpan ? JSON.parse(tersimpan) : [];
+        if (!Array.isArray(ucapan) || !ucapan.every(ucapanValid)) {
+            throw new Error("Format data buku tamu tidak valid.");
+        }
+        ucapan.forEach(data => tampilkanUcapan(data));
+    } catch (kesalahan) {
+        tampilkanNotifikasi("Buku tamu tersimpan tidak dapat dimuat.", true);
+        console.error("Gagal memuat data buku tamu:", kesalahan);
+    }
 }
 
 function formatTanggalKalender(tanggal) {
@@ -134,6 +209,7 @@ tombolBuka.addEventListener("click", () => {
     sampulDepan.setAttribute("aria-hidden", "true");
     isiUndangan.removeAttribute("aria-hidden");
     isiUndangan.removeAttribute("inert");
+    document.documentElement.classList.remove("terkunci");
     document.body.classList.remove("terkunci");
     tombolMusik.classList.remove("tersembunyi");
     document.getElementById("judul-sambutan").focus({ preventScroll: true });
@@ -152,6 +228,42 @@ audioLatar.addEventListener("play", () => perbaruiTombolMusik(true));
 audioLatar.addEventListener("pause", () => perbaruiTombolMusik(false));
 tombolKalender.addEventListener("click", unduhKalender);
 
+formRsvp.addEventListener("submit", event => {
+    event.preventDefault();
+    const dataBaru = {
+        nama: inputNamaRsvp.value.trim(),
+        kehadiran: document.getElementById("status-kehadiran").value,
+        ucapan: document.getElementById("ucapan-rsvp").value.trim(),
+        tanggal: new Date().toISOString()
+    };
+
+    if (!dataBaru.nama || !dataBaru.kehadiran || !dataBaru.ucapan) {
+        statusRsvp.textContent = "Lengkapi nama, status kehadiran, dan ucapan.";
+        tampilkanNotifikasi(statusRsvp.textContent, true);
+        return;
+    }
+
+    try {
+        const tersimpan = localStorage.getItem(kunciBukuTamu);
+        const ucapanLama = tersimpan ? JSON.parse(tersimpan) : [];
+        if (!Array.isArray(ucapanLama) || !ucapanLama.every(ucapanValid)) {
+            throw new Error("Format data buku tamu tidak valid.");
+        }
+        localStorage.setItem(kunciBukuTamu, JSON.stringify([dataBaru, ...ucapanLama]));
+    } catch (kesalahan) {
+        statusRsvp.textContent = "Ucapan belum dapat disimpan di browser ini.";
+        tampilkanNotifikasi(statusRsvp.textContent, true);
+        console.error("Gagal menyimpan data buku tamu:", kesalahan);
+        return;
+    }
+
+    tampilkanUcapan(dataBaru, true);
+    statusRsvp.textContent = "Konfirmasi berhasil disimpan.";
+    tampilkanNotifikasi(statusRsvp.textContent);
+    formRsvp.reset();
+    inputNamaRsvp.value = namaAwal;
+});
+
 document.querySelectorAll(".tombol-salin").forEach(tombol => {
     tombol.addEventListener("click", async () => {
         try {
@@ -164,6 +276,7 @@ document.querySelectorAll(".tombol-salin").forEach(tombol => {
     });
 });
 
+muatBukuTamu();
 document.body.classList.add("js-aktif");
 const elemenAnimasi = document.querySelectorAll(".animasi-muncul");
 if ("IntersectionObserver" in window) {

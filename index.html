@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="terkunci">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -122,14 +122,40 @@
                 <section class="kartu-bagian bagian-galeri animasi-muncul" aria-labelledby="judul-galeri">
                     <p class="label-kecil">MOMEN BAHAGIA</p>
                     <h3 class="judul-bagian" id="judul-galeri">Galeri Foto</h3>
-                    <!-- Ganti URL placeholder dengan path foto lokal, misalnya assets/foto-1.jpg. -->
+                    <!-- Letakkan foto galeri di folder assets/img/. -->
                     <div class="kisi-galeri">
-                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/e0f2fe/0f172a?text=Foto+1" alt="Placeholder foto kenangan 1" loading="lazy" decoding="async">
-                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/fef9c3/0f172a?text=Foto+2" alt="Placeholder foto kenangan 2" loading="lazy" decoding="async">
-                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/bae6fd/0f172a?text=Foto+3" alt="Placeholder foto kenangan 3" loading="lazy" decoding="async">
-                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/fde68a/0f172a?text=Foto+4" alt="Placeholder foto kenangan 4" loading="lazy" decoding="async">
-                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/dbeafe/0f172a?text=Foto+5" alt="Placeholder foto kenangan 5" loading="lazy" decoding="async">
-                        <img class="foto-galeri animasi-muncul" src="https://placehold.co/600x450/ffedd5/0f172a?text=Foto+6" alt="Placeholder foto kenangan 6" loading="lazy" decoding="async">
+                        <img class="foto-galeri animasi-muncul" src="assets/img/foto1.jpg" alt="Kenangan ulang tahun Farid Athaillah bersama keluarga" loading="lazy" decoding="async">
+                        <img class="foto-galeri animasi-muncul" src="assets/img/foto2.jpg" alt="Momen kebersamaan Farid Athaillah dengan sahabat" loading="lazy" decoding="async">
+                        <img class="foto-galeri animasi-muncul" src="assets/img/foto3.jpg" alt="Suasana perayaan ulang tahun Farid Athaillah" loading="lazy" decoding="async">
+                        <img class="foto-galeri animasi-muncul" src="assets/img/foto4.jpg" alt="Potret kenangan spesial Farid Athaillah" loading="lazy" decoding="async">
+                    </div>
+                </section>
+
+                <section class="kartu-bagian bagian-rsvp animasi-muncul" aria-labelledby="judul-rsvp">
+                    <p class="label-kecil">KONFIRMASI &amp; BUKU TAMU</p>
+                    <h3 class="judul-bagian" id="judul-rsvp">Konfirmasi Kehadiran</h3>
+                    <form class="form-rsvp" id="form-rsvp">
+                        <div class="kolom-form">
+                            <label for="nama-rsvp">Nama Tamu</label>
+                            <input id="nama-rsvp" name="nama" type="text" autocomplete="name" maxlength="80" required>
+                        </div>
+                        <div class="kolom-form">
+                            <label for="status-kehadiran">Status Kehadiran</label>
+                            <select id="status-kehadiran" name="kehadiran" required>
+                                <option value="" selected disabled>Pilih status kehadiran</option>
+                                <option value="Hadir">Hadir</option>
+                                <option value="Tidak Hadir">Tidak Hadir</option>
+                            </select>
+                        </div>
+                        <div class="kolom-form">
+                            <label for="ucapan-rsvp">Ucapan &amp; Doa</label>
+                            <textarea id="ucapan-rsvp" name="ucapan" rows="4" maxlength="600" required></textarea>
+                        </div>
+                        <button class="tombol-kirim" type="submit">Kirim Konfirmasi</button>
+                    </form>
+                    <p class="status-rsvp teks-tersembunyi" id="status-rsvp" aria-live="polite"></p>
+                    <div class="daftar-ucapan" id="daftar-ucapan" aria-label="Daftar ucapan buku tamu" aria-live="polite" aria-relevant="additions">
+                        <p class="kosong-buku-tamu" id="kosong-buku-tamu">Belum ada ucapan. Jadilah yang pertama!</p>
                     </div>
                 </section>
 

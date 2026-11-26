@@ -18,6 +18,27 @@ html {
     scroll-behavior: smooth;
 }
 
+html,
+body,
+.sampul-depan,
+.isi-undangan,
+.wadah-undangan,
+.kartu-bagian,
+.daftar-ucapan {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.sampul-depan::-webkit-scrollbar,
+.isi-undangan::-webkit-scrollbar,
+.wadah-undangan::-webkit-scrollbar,
+.kartu-bagian::-webkit-scrollbar,
+.daftar-ucapan::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     min-width: 320px;
     margin: 0;
@@ -25,8 +46,9 @@ body {
     background: linear-gradient(135deg, #e0f2fe, #fef9c3);
 }
 
+html.terkunci,
 body.terkunci {
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 button {
@@ -544,6 +566,7 @@ button {
 }
 
 .foto-galeri {
+    position: relative;
     display: block;
     width: 100%;
     aspect-ratio: 4 / 3;
@@ -551,6 +574,19 @@ button {
     border-radius: 14px;
     object-fit: cover;
     background: #e0f2fe;
+    transition: transform 220ms ease;
+}
+
+.foto-galeri:hover {
+    transform: scale(1.03);
+}
+
+.js-aktif .foto-galeri.animasi-muncul {
+    transition: opacity 600ms ease, transform 220ms ease;
+}
+
+.js-aktif .foto-galeri.animasi-muncul.terlihat:hover {
+    transform: translateY(0) scale(1.03);
 }
 
 .js-aktif .animasi-muncul {
@@ -562,6 +598,144 @@ button {
 .js-aktif .animasi-muncul.terlihat {
     opacity: 1;
     transform: translateY(0);
+}
+
+.bagian-rsvp {
+    text-align: center;
+}
+
+.form-rsvp {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    max-width: 42rem;
+    margin: 1.2rem auto 0;
+    text-align: left;
+}
+
+.kolom-form {
+    display: grid;
+    min-width: 0;
+    gap: 0.4rem;
+}
+
+.kolom-form label {
+    color: #0f172a;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.kolom-form input,
+.kolom-form select,
+.kolom-form textarea {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid #bae6fd;
+    border-radius: 12px;
+    padding: 0.75rem 0.85rem;
+    color: #0f172a;
+    background: #ffffff;
+    font: inherit;
+}
+
+.kolom-form textarea {
+    min-height: 7rem;
+    resize: vertical;
+}
+
+.kolom-form input:focus,
+.kolom-form select:focus,
+.kolom-form textarea:focus {
+    outline: 3px solid rgba(2, 132, 199, 0.22);
+    border-color: #0284c7;
+}
+
+.tombol-kirim {
+    min-height: 3rem;
+    justify-self: start;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.8rem 1.5rem;
+    color: #ffffff;
+    background: #f97316;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.tombol-kirim:hover {
+    transform: translateY(-2px);
+    background: #ea580c;
+}
+
+.tombol-kirim:focus-visible {
+    outline: 3px solid #0284c7;
+    outline-offset: 3px;
+}
+
+.daftar-ucapan {
+    display: grid;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.kosong-buku-tamu {
+    margin: 0;
+    color: #64748b;
+    text-align: center;
+}
+
+.kartu-ucapan {
+    min-width: 0;
+    border: 1px solid #bae6fd;
+    border-radius: 14px;
+    padding: 1rem;
+    background: #f0f9ff;
+}
+
+.kepala-ucapan {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.nama-pengucap {
+    color: #0f172a;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.lencana-kehadiran {
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    color: #075985;
+    background: #e0f2fe;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.lencana-kehadiran.tidak-hadir {
+    color: #9a3412;
+    background: #ffedd5;
+}
+
+.isi-ucapan {
+    margin: 0.75rem 0 0;
+    color: #334155;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.tanggal-ucapan {
+    display: block;
+    margin-top: 0.65rem;
+    color: #64748b;
+    font-size: 0.76rem;
 }
 
 .notifikasi-salin {
@@ -705,6 +879,15 @@ button {
     .kartu-alamat {
         grid-column: 1 / -1;
     }
+
+    .form-rsvp {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kolom-form:nth-child(3),
+    .tombol-kirim {
+        grid-column: 1 / -1;
+    }
 }
 
 @media (min-width: 760px) {
@@ -719,7 +902,7 @@ button {
     }
 
     .kisi-galeri {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.9rem;
     }
 
