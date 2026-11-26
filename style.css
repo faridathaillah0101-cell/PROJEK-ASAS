@@ -1,0 +1,433 @@
+:root {
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    color: #0f172a;
+    background: #e0f2fe;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 320px;
+    overflow-x: clip;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-width: 320px;
+    margin: 0;
+    overflow-x: clip;
+    background: linear-gradient(135deg, #e0f2fe, #fef9c3);
+}
+
+body.terkunci {
+    overflow-y: hidden;
+}
+
+button {
+    font: inherit;
+}
+
+.sampul-depan {
+    position: fixed;
+    z-index: 5;
+    inset: 0;
+    display: flex;
+    min-height: 100vh;
+    min-height: 100svh;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 2rem 1.15rem;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(249, 115, 22, 0.2) 0 3px, transparent 4px),
+        radial-gradient(circle at 84% 21%, rgba(2, 132, 199, 0.18) 0 4px, transparent 5px),
+        radial-gradient(circle at 78% 78%, rgba(250, 204, 21, 0.36) 0 4px, transparent 5px),
+        radial-gradient(circle at 18% 82%, rgba(2, 132, 199, 0.16) 0 3px, transparent 4px),
+        linear-gradient(135deg, #e0f2fe, #fef9c3);
+    text-align: center;
+    transition: transform 900ms cubic-bezier(0.76, 0, 0.24, 1);
+    will-change: transform;
+}
+
+.sampul-depan.dibuka {
+    transform: translateY(-100%);
+    pointer-events: none;
+}
+
+.wadah-teks {
+    width: min(100%, 34rem);
+    margin: 0 auto;
+    border: 3px solid #facc15;
+    border-radius: 20px;
+    padding: clamp(2rem, 8vw, 3.5rem) clamp(1.25rem, 6vw, 3rem);
+    background: #ffffff;
+    box-shadow: 0 1.5rem 4rem rgba(2, 132, 199, 0.18), 0 0.4rem 1rem rgba(2, 132, 199, 0.08);
+    animation: muncul 850ms ease both;
+}
+
+.label-kecil {
+    margin: 0 0 1.15rem;
+    color: #0284c7;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    line-height: 1.5;
+}
+
+.nama-pemilik,
+.judul-sambutan,
+.kartu-info h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
+}
+
+.nama-pemilik {
+    margin: 0 0 1.6rem;
+    color: #0284c7;
+    font-size: clamp(2.2rem, 10vw, 4rem);
+    letter-spacing: -0.045em;
+    line-height: 1.08;
+    overflow-wrap: anywhere;
+}
+
+.sapaan-tamu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin: 0 0 1.6rem;
+    border: 1px solid #fde68a;
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    color: #0f172a;
+    background: #fef9c3;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.nama-tamu {
+    color: #0f172a;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.tombol-buka {
+    display: inline-flex;
+    min-height: 3.15rem;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.85rem 2rem;
+    color: #ffffff;
+    background: #f97316;
+    box-shadow: 0 0.6rem 1.5rem rgba(249, 115, 22, 0.24);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 700;
+    transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.tombol-buka:hover {
+    transform: scale(1.04);
+    background: #ea580c;
+    box-shadow: 0 0.85rem 1.7rem rgba(249, 115, 22, 0.3);
+}
+
+.tombol-buka:focus-visible,
+.tombol-musik:focus-visible {
+    outline: 3px solid #0284c7;
+    outline-offset: 4px;
+}
+
+.isi-undangan {
+    min-height: 100vh;
+    padding: 3rem 1rem;
+    color: #0f172a;
+    background:
+        radial-gradient(circle at 12% 16%, rgba(2, 132, 199, 0.12) 0 4px, transparent 5px),
+        radial-gradient(circle at 86% 22%, rgba(249, 115, 22, 0.13) 0 3px, transparent 4px),
+        radial-gradient(circle at 78% 84%, rgba(250, 204, 21, 0.22) 0 4px, transparent 5px),
+        linear-gradient(135deg, #e0f2fe, #fef9c3);
+}
+
+.wadah-undangan {
+    width: min(100%, 850px);
+    margin: 0 auto;
+    border: 2px solid #facc15;
+    border-radius: 24px;
+    padding: clamp(1.25rem, 5vw, 3.5rem);
+    background: #ffffff;
+    box-shadow: 0 1.25rem 3rem rgba(2, 132, 199, 0.14);
+    text-align: center;
+}
+
+.teks-perayaan {
+    margin: 0 0 0.4rem;
+    color: #334155;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.25rem, 5vw, 1.7rem);
+    font-style: italic;
+}
+
+.judul-sambutan {
+    margin: 0;
+    color: #0f172a;
+    font-size: clamp(2.7rem, 10vw, 4rem);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+.pemisah {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+    color: #f97316;
+    font-size: 0.9rem;
+}
+
+.pemisah span {
+    width: 3rem;
+    height: 1px;
+    background: rgba(2, 132, 199, 0.35);
+}
+
+.pesan-undangan {
+    max-width: 39rem;
+    margin: 0 auto;
+    color: #334155;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.bagian-hitung-mundur {
+    max-width: 40rem;
+    margin: 2rem auto 0;
+}
+
+.judul-hitung-mundur {
+    margin: 0 0 0.85rem;
+    color: #0f172a;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.25rem, 5vw, 1.6rem);
+}
+
+.hitung-mundur {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.kotak-waktu {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #facc15;
+    border-radius: 14px;
+    padding: 0.7rem 0.25rem;
+    background: #fef9c3;
+}
+
+.kotak-waktu:nth-child(even) {
+    border-color: #bae6fd;
+    background: #e0f2fe;
+}
+
+.angka-waktu {
+    color: #0284c7;
+    font-size: clamp(1.15rem, 6vw, 2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+}
+
+.satuan-waktu {
+    margin-top: 0.25rem;
+    color: #334155;
+    font-size: clamp(0.58rem, 2.5vw, 0.78rem);
+    font-weight: 700;
+}
+
+.daftar-info {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    margin-top: 2.5rem;
+    text-align: left;
+}
+
+.kartu-info {
+    border: 1px solid rgba(250, 204, 21, 0.8);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    background: #ffffff;
+    box-shadow: 0 0.75rem 2rem rgba(2, 132, 199, 0.12);
+}
+
+.ikon-info {
+    display: inline-flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #ffffff;
+    background: #0284c7;
+    font-size: 1.3rem;
+}
+
+.kartu-info h3 {
+    margin: 0.8rem 0 0.35rem;
+    color: #0f172a;
+    font-size: 1.5rem;
+}
+
+.kartu-info p {
+    margin: 0;
+    color: #334155;
+    line-height: 1.7;
+}
+
+.tombol-kalender {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.8rem 1.6rem;
+    color: #ffffff;
+    background: #f97316;
+    box-shadow: 0 0.6rem 1.5rem rgba(249, 115, 22, 0.2);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 700;
+    transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.tombol-kalender:hover {
+    transform: scale(1.04);
+    background: #ea580c;
+    box-shadow: 0 0.85rem 1.7rem rgba(249, 115, 22, 0.28);
+}
+
+.tombol-kalender:focus-visible {
+    outline: 3px solid #0284c7;
+    outline-offset: 4px;
+}
+
+.penutup {
+    margin: 2rem 0 0;
+    color: #ea580c;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.25rem;
+    font-style: italic;
+}
+
+.tombol-musik {
+    position: fixed;
+    z-index: 8;
+    right: max(1.2rem, env(safe-area-inset-right));
+    bottom: max(1.2rem, env(safe-area-inset-bottom));
+    display: flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #ffffff;
+    background: #0284c7;
+    box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.tombol-musik:hover {
+    transform: scale(1.06);
+    background: #0369a1;
+}
+
+.ikon-musik {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.tersembunyi,
+.teks-tersembunyi {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.tersembunyi {
+    display: none;
+}
+
+@keyframes muncul {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 600px) {
+    .isi-undangan {
+        padding: 4.5rem 2rem;
+    }
+
+    .daftar-info {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.25rem;
+    }
+
+    .kartu-info {
+        padding: 2rem;
+    }
+}
+
+@media (max-height: 520px) and (max-width: 599px) {
+    .sampul-depan {
+        overflow-y: auto;
+        align-items: flex-start;
+        padding-top: 1.2rem;
+        padding-bottom: 1.2rem;
+    }
+
+    .wadah-teks {
+        margin: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#e0f2fe">
+    <meta name="description" content="Undangan ulang tahun Farid Athaillah.">
+    <title>Undangan Ulang Tahun | Farid Athaillah</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body class="terkunci">
+    <main>
+        <section class="sampul-depan" id="sampul-depan" aria-labelledby="judul-acara">
+            <div class="wadah-teks">
+                <p class="label-kecil">UNDANGAN ULANG TAHUN</p>
+                <h1 class="nama-pemilik" id="judul-acara">Farid Athaillah</h1>
+                <p class="sapaan-tamu">
+                    <span>Kepada Yth.</span>
+                    <strong class="nama-tamu" id="nama-tamu">Tamu Undangan</strong>
+                </p>
+                <button class="tombol-buka" id="tombol-buka" type="button">Buka Undangan</button>
+            </div>
+        </section>
+
+        <section class="isi-undangan" id="isi-undangan" aria-labelledby="judul-sambutan" aria-hidden="true" inert>
+            <div class="wadah-undangan">
+                <p class="label-kecil">Mari rayakan bersama</p>
+                <p class="teks-perayaan">Satu hari istimewa untuk</p>
+                <h2 class="judul-sambutan" id="judul-sambutan" tabindex="-1">Farid Athaillah</h2>
+                <div class="pemisah pemisah-tengah" aria-hidden="true"><span></span>✦<span></span></div>
+                <p class="pesan-undangan">
+                    Dengan bahagia, kami mengundang keluarga dan sahabat untuk hadir merayakan hari ulang tahun Farid. Kehadiran dan doa baik Anda akan menjadi hadiah yang sangat berarti.
+                </p>
+                <section class="bagian-hitung-mundur" aria-labelledby="judul-hitung-mundur">
+                    <h3 class="judul-hitung-mundur" id="judul-hitung-mundur">Menuju Hari Bahagia</h3>
+                    <div class="hitung-mundur" role="timer" aria-label="Hitung mundur menuju 5 Februari 2027 pukul 18.00 WIB">
+                        <div class="kotak-waktu">
+                            <span class="angka-waktu" id="hitung-hari">00</span>
+                            <span class="satuan-waktu">Hari</span>
+                        </div>
+                        <div class="kotak-waktu">
+                            <span class="angka-waktu" id="hitung-jam">00</span>
+                            <span class="satuan-waktu">Jam</span>
+                        </div>
+                        <div class="kotak-waktu">
+                            <span class="angka-waktu" id="hitung-menit">00</span>
+                            <span class="satuan-waktu">Menit</span>
+                        </div>
+                        <div class="kotak-waktu">
+                            <span class="angka-waktu" id="hitung-detik">00</span>
+                            <span class="satuan-waktu">Detik</span>
+                        </div>
+                    </div>
+                    <p class="teks-tersembunyi" id="status-acara" aria-live="polite"></p>
+                </section>
+                <div class="daftar-info">
+                    <article class="kartu-info">
+                        <span class="ikon-info" aria-hidden="true">♡</span>
+                        <h3>Hari &amp; Waktu</h3>
+                        <p>Jumat, 5 Februari 2027<br>18.00 WIB – selesai</p>
+                    </article>
+                    <article class="kartu-info">
+                        <span class="ikon-info" aria-hidden="true">⌖</span>
+                        <h3>Lokasi</h3>
+                        <p>Paku Jaya<br>Jl. Bhayangkara No. 15, Tangerang selatan, Banten</p>
+                    </article>
+                </div>
+                <button class="tombol-kalender" id="tombol-kalender" type="button">Simpan ke Kalender</button>
+                <p class="penutup">Sampai jumpa di hari bahagia!</p>
+            </div>
+        </section>
+    </main>
+
+    <button class="tombol-musik tersembunyi" id="tombol-musik" type="button" aria-label="Putar musik" aria-pressed="false" title="Putar musik">
+        <svg class="ikon-musik" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+        <span class="teks-tersembunyi" id="status-musik">Musik dijeda</span>
+    </button>
+</body>
+</html>
