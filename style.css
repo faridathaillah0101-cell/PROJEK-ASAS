@@ -669,6 +669,12 @@ button {
     background: #ea580c;
 }
 
+.tombol-kirim:disabled {
+    cursor: wait;
+    opacity: 0.72;
+    transform: none;
+}
+
 .tombol-kirim:focus-visible {
     outline: 3px solid #0284c7;
     outline-offset: 3px;

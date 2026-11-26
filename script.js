@@ -20,6 +20,7 @@ const formRsvp = document.getElementById("form-rsvp");
 const daftarUcapan = document.getElementById("daftar-ucapan");
 const pesanKosong = document.getElementById("kosong-buku-tamu");
 const statusRsvp = document.getElementById("status-rsvp");
+const tombolKirimRsvp = document.getElementById("tombol-kirim-rsvp");
 const elemenHitungMundur = {
     hari: document.getElementById("hitung-hari"),
     jam: document.getElementById("hitung-jam"),
@@ -29,7 +30,7 @@ const elemenHitungMundur = {
 let waktuNotifikasi;
 let musikBerputar = false;
 let undanganDibuka = false;
-const kunciBukuTamu = "undangan-farid-athaillah-buku-tamu";
+const apiSheetDB = "https://sheetdb.io/api/v1/l2bgueu4zel5h";
 
 const tautanGoogleMaps = "https://maps.app.goo.gl/qYvoKWfRgXmiJxd47";
 document.getElementById("tautan-arah").href = tautanGoogleMaps;
@@ -74,7 +75,16 @@ function ucapanValid(ucapan) {
         && typeof ucapan.ucapan === "string"
         && ucapan.ucapan.trim().length > 0
         && typeof ucapan.tanggal === "string"
-        && !Number.isNaN(Date.parse(ucapan.tanggal));
+        && ucapan.tanggal.trim().length > 0;
+}
+
+function normalisasiUcapan(baris) {
+    return {
+        tanggal: typeof baris.Waktu === "string" ? baris.Waktu.trim() : "",
+        nama: typeof baris.Nama === "string" ? baris.Nama.trim() : "",
+        kehadiran: typeof baris.Status === "string" ? baris.Status.trim() : "",
+        ucapan: typeof baris.Ucapan === "string" ? baris.Ucapan.trim() : ""
+    };
 }
 
 function buatKartuUcapan(ucapan) {
@@ -100,37 +110,55 @@ function buatKartuUcapan(ucapan) {
 
     const waktu = document.createElement("time");
     waktu.className = "tanggal-ucapan";
-    waktu.dateTime = ucapan.tanggal;
-    waktu.textContent = new Date(ucapan.tanggal).toLocaleString("id-ID", {
-        dateStyle: "medium",
-        timeStyle: "short"
-    });
+    const tanggal = new Date(ucapan.tanggal);
+    if (!Number.isNaN(tanggal.getTime())) {
+        waktu.dateTime = tanggal.toISOString();
+        waktu.textContent = tanggal.toLocaleString("id-ID", {
+            dateStyle: "medium",
+            timeStyle: "short"
+        });
+    } else {
+        waktu.textContent = ucapan.tanggal;
+    }
 
     kartu.append(kepala, isi, waktu);
     return kartu;
 }
 
-function tampilkanUcapan(ucapan, diAwal = false) {
-    if (pesanKosong.parentNode) pesanKosong.remove();
-    const kartu = buatKartuUcapan(ucapan);
-    if (diAwal) {
-        daftarUcapan.prepend(kartu);
-    } else {
-        daftarUcapan.append(kartu);
-    }
-}
-
-function muatBukuTamu() {
+async function muatBukuTamu() {
+    pesanKosong.textContent = "Memuat ucapan...";
+    daftarUcapan.replaceChildren(pesanKosong);
     try {
-        const tersimpan = localStorage.getItem(kunciBukuTamu);
-        const ucapan = tersimpan ? JSON.parse(tersimpan) : [];
-        if (!Array.isArray(ucapan) || !ucapan.every(ucapanValid)) {
-            throw new Error("Format data buku tamu tidak valid.");
+        const response = await fetch(apiSheetDB, {
+            headers: { Accept: "application/json" }
+        });
+        if (!response.ok) {
+            throw new Error(`SheetDB gagal memuat data (HTTP ${response.status}).`);
         }
-        ucapan.forEach(data => tampilkanUcapan(data));
+
+        const baris = await response.json();
+        if (!Array.isArray(baris)) {
+            throw new Error("Format data dari SheetDB tidak valid.");
+        }
+
+        const ucapan = baris.map(normalisasiUcapan);
+        if (!ucapan.every(ucapanValid)) {
+            throw new Error("Sebagian data buku tamu dari SheetDB tidak valid.");
+        }
+
+        if (ucapan.length === 0) {
+            pesanKosong.textContent = "Belum ada ucapan. Jadilah yang pertama!";
+            return;
+        }
+
+        daftarUcapan.replaceChildren();
+        ucapan.reverse().forEach(data => daftarUcapan.append(buatKartuUcapan(data)));
     } catch (kesalahan) {
-        tampilkanNotifikasi("Buku tamu tersimpan tidak dapat dimuat.", true);
-        console.error("Gagal memuat data buku tamu:", kesalahan);
+        pesanKosong.textContent = "Daftar ucapan belum dapat dimuat. Silakan coba lagi.";
+        daftarUcapan.replaceChildren(pesanKosong);
+        statusRsvp.textContent = pesanKosong.textContent;
+        tampilkanNotifikasi(pesanKosong.textContent, true);
+        console.error("Gagal memuat buku tamu dari SheetDB:", kesalahan);
     }
 }
 
@@ -228,40 +256,53 @@ audioLatar.addEventListener("play", () => perbaruiTombolMusik(true));
 audioLatar.addEventListener("pause", () => perbaruiTombolMusik(false));
 tombolKalender.addEventListener("click", unduhKalender);
 
-formRsvp.addEventListener("submit", event => {
+formRsvp.addEventListener("submit", async event => {
     event.preventDefault();
-    const dataBaru = {
-        nama: inputNamaRsvp.value.trim(),
-        kehadiran: document.getElementById("status-kehadiran").value,
-        ucapan: document.getElementById("ucapan-rsvp").value.trim(),
-        tanggal: new Date().toISOString()
-    };
+    const namaInput = inputNamaRsvp.value.trim();
+    const statusInput = document.getElementById("status-kehadiran").value;
+    const ucapanInput = document.getElementById("ucapan-rsvp").value.trim();
 
-    if (!dataBaru.nama || !dataBaru.kehadiran || !dataBaru.ucapan) {
+    if (!namaInput || !statusInput || !ucapanInput) {
         statusRsvp.textContent = "Lengkapi nama, status kehadiran, dan ucapan.";
         tampilkanNotifikasi(statusRsvp.textContent, true);
         return;
     }
 
+    tombolKirimRsvp.disabled = true;
+    tombolKirimRsvp.textContent = "Mengirim...";
     try {
-        const tersimpan = localStorage.getItem(kunciBukuTamu);
-        const ucapanLama = tersimpan ? JSON.parse(tersimpan) : [];
-        if (!Array.isArray(ucapanLama) || !ucapanLama.every(ucapanValid)) {
-            throw new Error("Format data buku tamu tidak valid.");
+        const response = await fetch(apiSheetDB, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                data: [{
+                    Waktu: new Date().toLocaleString("id-ID"),
+                    Nama: namaInput,
+                    Status: statusInput,
+                    Ucapan: ucapanInput
+                }]
+            })
+        });
+        if (!response.ok) {
+            throw new Error(`SheetDB gagal menyimpan data (HTTP ${response.status}).`);
         }
-        localStorage.setItem(kunciBukuTamu, JSON.stringify([dataBaru, ...ucapanLama]));
-    } catch (kesalahan) {
-        statusRsvp.textContent = "Ucapan belum dapat disimpan di browser ini.";
-        tampilkanNotifikasi(statusRsvp.textContent, true);
-        console.error("Gagal menyimpan data buku tamu:", kesalahan);
-        return;
-    }
 
-    tampilkanUcapan(dataBaru, true);
-    statusRsvp.textContent = "Konfirmasi berhasil disimpan.";
-    tampilkanNotifikasi(statusRsvp.textContent);
-    formRsvp.reset();
-    inputNamaRsvp.value = namaAwal;
+        formRsvp.reset();
+        tombolKirimRsvp.textContent = "Kirim Konfirmasi";
+        statusRsvp.textContent = "Konfirmasi berhasil dikirim.";
+        tampilkanNotifikasi(statusRsvp.textContent);
+        await muatBukuTamu();
+    } catch (kesalahan) {
+        statusRsvp.textContent = "Konfirmasi belum berhasil dikirim. Coba lagi.";
+        tampilkanNotifikasi(statusRsvp.textContent, true);
+        console.error("Gagal mengirim RSVP ke SheetDB:", kesalahan);
+    } finally {
+        tombolKirimRsvp.disabled = false;
+        tombolKirimRsvp.textContent = "Kirim Konfirmasi";
+    }
 });
 
 document.querySelectorAll(".tombol-salin").forEach(tombol => {
