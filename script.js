@@ -73,7 +73,6 @@ function ucapanValid(ucapan) {
         && ucapan.nama.trim().length > 0
         && (ucapan.kehadiran === "Hadir" || ucapan.kehadiran === "Tidak Hadir")
         && typeof ucapan.ucapan === "string"
-        && ucapan.ucapan.trim().length > 0
         && typeof ucapan.tanggal === "string"
         && ucapan.tanggal.trim().length > 0;
 }
@@ -106,7 +105,7 @@ function buatKartuUcapan(ucapan) {
 
     const isi = document.createElement("p");
     isi.className = "isi-ucapan";
-    isi.textContent = ucapan.ucapan;
+    isi.textContent = ucapan.ucapan.trim() || "-";
 
     const waktu = document.createElement("time");
     waktu.className = "tanggal-ucapan";
